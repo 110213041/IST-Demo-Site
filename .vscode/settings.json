@@ -1,9 +1,18 @@
 {
+    "[css]": {
+        "editor.suggest.insertMode": "replace",
+        "editor.defaultFormatter": "vscode.css-language-features"
+    },
+    "[html]": {
+        "editor.suggest.insertMode": "replace",
+        "editor.defaultFormatter": "vscode.html-language-features"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "denoland.vscode-deno"
+    },
     "deno.enable": true,
     "deno.lint": true,
     "deno.unstable": false,
     "editor.formatOnSave": true,
-    "[typescript]": {
-        "editor.defaultFormatter": "denoland.vscode-deno"
-    }
+    "html.format.wrapLineLength": 100
 }
