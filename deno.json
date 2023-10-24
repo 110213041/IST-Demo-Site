@@ -11,8 +11,8 @@
         "useTabs": false
     },
     "imports": {
-        "database": "./src/server/database.ts",
-        "server_util": "./src/server/util.ts"
+        "client/": "./src/client/",
+        "server/": "./src/server/"
     },
     "tasks": {
         "dev": "deno run --allow-net --allow-read --watch ./src/main.ts"
