@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "noFallthroughCasesInSwitch": true
+    },
+    "fmt": {
+        "indentWidth": 4,
+        "lineWidth": 100,
+        "semiColons": true,
+        "singleQuote": false,
+        "useTabs": false
+    },
+    "imports": {
+        "database": "./src/server/database.ts"
+    },
+    "tasks": {
+        "dev": "deno run --allow-net --allow-read --watch ./src/main.ts"
+    }
+}
