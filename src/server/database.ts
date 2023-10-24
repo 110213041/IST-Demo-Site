@@ -15,6 +15,8 @@ const dbClient = await new Client().connect(
 );
 
 export async function resetDatabase(): Promise<boolean> {
+    console.log("reset database call.");
+
     let result: Record<"TABLE_SCHEMA" | "TABLE_NAME", string>[] = await dbClient.query(
         `SELECT TABLE_SCHEMA, TABLE_NAME FROM information_schema.tables WHERE TABLE_SCHEMA != "information_schema";`,
     );
@@ -51,6 +53,19 @@ export async function resetDatabase(): Promise<boolean> {
         }
     });
 
-    console.log("database reset success");
+    console.log("reset database success");
     return true;
+}
+
+export async function resetDatabasePerFourHour() {
+    console.log("resetDatabasePerFourHour call!");
+    await resetDatabase();
+
+    const currentTime = new Date();
+    console.log(`current time: ${currentTime}`);
+
+    const seconds = currentTime.getUTCSeconds();
+    const milliSeconds = currentTime.getUTCMilliseconds();
+
+    setTimeout(resetDatabasePerFourHour, (60 * 3 * 1000) - (seconds * 10000) - milliSeconds);
 }
