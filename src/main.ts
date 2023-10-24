@@ -1,18 +1,8 @@
 import { serveDir } from "https://deno.land/std@0.204.0/http/file_server.ts";
 
-import { resetDatabase } from "database";
-import { handleSuccessLog } from "server_util";
-
-async function indexPageHandler(): Promise<Response> {
-    const indexUint8Array = await Deno.readFile("./src/client/index.html");
-    const indexHTML = new TextDecoder().decode(indexUint8Array);
-
-    return new Response(indexHTML, {
-        headers: {
-            "content-type": "text/html",
-        },
-    });
-}
+import { resetDatabase } from "server/database.ts";
+import { handleSuccessLog } from "server/util.ts";
+import { aboutPageHandler, indexPageHandler } from "server/website.ts";
 
 async function resetDbHandler(): Promise<Response> {
     const status = await resetDatabase() ? 200 : 500;
@@ -46,6 +36,11 @@ function main(req: Request): Response | Promise<Response> {
             return resetDbHandler();
         }
 
+        case "/about": {
+            handleSuccessLog(pathName);
+            return aboutPageHandler();
+        }
+
         case "/": {
             handleSuccessLog(pathName);
             return indexPageHandler();
@@ -65,5 +60,6 @@ function main(req: Request): Response | Promise<Response> {
 }
 
 if (import.meta.main) {
+    // resetDatabasePerFourHour();
     Deno.serve((req) => main(req));
 }

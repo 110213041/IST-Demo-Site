@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="./static/css/common.css">
+    <link rel="stylesheet" href="./static/css/index.css">
+
+    <script type="module" src="./static/js/script.js" defer></script>
+    <title>暢所欲言</title>
+</head>
+
+<body>
+    <h1>誠邀各位 暢所欲言</h1>
+
+    <a href="./about">關於我們</a>
+
+    <section id="new-comment-section">
+        <h2>留言區</h2>
+        <form action="" method="post">
+            <label for="new-comment-name">姓名:</label>
+            <input type="text" id="new-comment-name">
+            <br>
+            <label for="new-comment-content">内容:</label>
+            <textarea type="text" id="new-comment-content" rows="5" cols="40"
+                placeholder="(2000字内)"></textarea>
+        </form>
+    </section>
+
+    <section id="display-comment-section">
+        <h2>訪客留言</h2>
+        <!-- TODO: Display Comment From Database -->
+    </section>
+</body>
+
+</html>
