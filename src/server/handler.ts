@@ -1,6 +1,6 @@
 import { serveDir, serveFile } from "https://deno.land/std@0.204.0/http/file_server.ts";
 
-import { resetDatabase } from "server/database.ts";
+import { getComment, resetDatabase } from "server/database.ts";
 import { requestLog } from "server/util.ts";
 
 export async function resetDbHandler(req: Request): Promise<Response> {
@@ -10,6 +10,19 @@ export async function resetDbHandler(req: Request): Promise<Response> {
 
     return new Response(JSON.stringify({ status: status }), {
         status: status,
+        headers: {
+            "content-type": "application/json",
+        },
+    });
+}
+
+export async function getCommentHandler(req: Request): Promise<Response> {
+    const comments = await getComment();
+
+    requestLog(req, 200);
+
+    return new Response(JSON.stringify(comments), {
+        status: 200,
         headers: {
             "content-type": "application/json",
         },

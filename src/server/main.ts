@@ -1,6 +1,7 @@
 import {
     aboutPageHandler,
     defaultHandler,
+    getCommentHandler,
     indexPageHandler,
     resetDbHandler,
     staticPathHandler,
@@ -16,8 +17,15 @@ function main(req: Request): Response | Promise<Response> {
     const pathName = reqUrl.pathname;
 
     switch (pathName) {
+        /** api call */
+
         case "/reset_db":
             return resetDbHandler(req);
+
+        case "/get_comment":
+            return getCommentHandler(req);
+
+        /** page route */
 
         case "/about":
             return aboutPageHandler(req);

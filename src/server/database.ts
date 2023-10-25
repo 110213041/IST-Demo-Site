@@ -57,7 +57,7 @@ export async function resetDatabase(): Promise<boolean> {
     return true;
 }
 
-export async function resetDatabasePerFourHour() {
+export async function resetDatabasePerFourHour(): Promise<void> {
     console.log("resetDatabasePerFourHour call!");
     await resetDatabase();
 
@@ -68,4 +68,16 @@ export async function resetDatabasePerFourHour() {
     const milliSeconds = currentTime.getUTCMilliseconds();
 
     setTimeout(resetDatabasePerFourHour, (60 * 3 * 1000) - (seconds * 10000) - milliSeconds);
+}
+
+export async function getComment() {
+    type messageBoardResult = {
+        id: number;
+        name: string;
+        content: string;
+    };
+
+    const result: messageBoardResult[] = await dbClient.query("SELECT * FROM message_board;");
+
+    return result;
 }
