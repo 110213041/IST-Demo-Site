@@ -1,9 +1,12 @@
 import { serveFile } from "https://deno.land/std@0.204.0/http/file_server.ts";
 
 import { resetDatabase } from "server/database.ts";
+import { requestLog } from "server/util.ts";
 
-export async function resetDbHandler(): Promise<Response> {
+export async function resetDbHandler(req: Request): Promise<Response> {
     const status = await resetDatabase() ? 200 : 500;
+
+    requestLog(req, status);
 
     return new Response(JSON.stringify({ status: status }), {
         status: status,
@@ -14,6 +17,7 @@ export async function resetDbHandler(): Promise<Response> {
 }
 
 async function responseTemplate(req: Request, path: string): Promise<Response> {
+    requestLog(req, 200);
     return await serveFile(req, path);
 }
 
@@ -25,7 +29,9 @@ export async function aboutPageHandler(req: Request): Promise<Response> {
     return await responseTemplate(req, "./src/client/about.html");
 }
 
-export function defaultHandler() {
+export function defaultHandler(req: Request) {
+    requestLog(req, 404);
+
     return new Response("Not Found", {
         status: 404,
         headers: {

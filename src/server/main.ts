@@ -1,6 +1,5 @@
 import { serveDir } from "https://deno.land/std@0.204.0/http/file_server.ts";
 
-import { requestLog } from "server/util.ts";
 import {
     aboutPageHandler,
     defaultHandler,
@@ -24,25 +23,17 @@ function main(req: Request): Response | Promise<Response> {
     const pathName = reqUrl.pathname;
 
     switch (pathName) {
-        case "/reset_db": {
-            requestLog(req, 200);
-            return resetDbHandler();
-        }
+        case "/reset_db":
+            return resetDbHandler(req);
 
-        case "/about": {
-            requestLog(req, 200);
+        case "/about":
             return aboutPageHandler(req);
-        }
 
-        case "/": {
-            requestLog(req, 200);
+        case "/":
             return indexPageHandler(req);
-        }
 
-        default: {
-            requestLog(req, 404);
-            return defaultHandler();
-        }
+        default:
+            return defaultHandler(req);
     }
 }
 
