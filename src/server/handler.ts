@@ -1,4 +1,4 @@
-import { serveFile } from "https://deno.land/std@0.204.0/http/file_server.ts";
+import { serveDir, serveFile } from "https://deno.land/std@0.204.0/http/file_server.ts";
 
 import { resetDatabase } from "server/database.ts";
 import { requestLog } from "server/util.ts";
@@ -14,6 +14,16 @@ export async function resetDbHandler(req: Request): Promise<Response> {
             "content-type": "application/json",
         },
     });
+}
+
+export async function staticPathHandler(req: Request): Promise<Response> {
+    return await serveDir(
+        req,
+        {
+            fsRoot: "src/client/static",
+            urlRoot: "static",
+        },
+    );
 }
 
 async function responseTemplate(req: Request, path: string): Promise<Response> {

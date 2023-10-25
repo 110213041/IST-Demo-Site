@@ -1,23 +1,16 @@
-import { serveDir } from "https://deno.land/std@0.204.0/http/file_server.ts";
-
 import {
     aboutPageHandler,
     defaultHandler,
     indexPageHandler,
     resetDbHandler,
+    staticPathHandler,
 } from "server/handler.ts";
 
 function main(req: Request): Response | Promise<Response> {
     const reqUrl = new URL(req.url);
 
     if (reqUrl.pathname.includes("/static")) {
-        return serveDir(
-            req,
-            {
-                fsRoot: "src/client/static",
-                urlRoot: "static",
-            },
-        );
+        return staticPathHandler(req);
     }
 
     const pathName = reqUrl.pathname;
