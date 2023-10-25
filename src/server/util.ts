@@ -11,8 +11,8 @@ export function handleFailLog(path: string) {
 export function requestLog(req: Request, status: Status) {
     const now = new Date();
     const year = now.getUTCFullYear();
-    const month = now.getUTCMonth().toString().padStart(2, "0");
-    const date = now.getUTCMonth().toString().padStart(2, "0");
+    const month = `${now.getUTCMonth() + 1}`.padStart(2, "0");
+    const date = now.getUTCDate().toString().padStart(2, "0");
 
     const hour = now.getUTCHours().toString().padStart(2, "0");
     const minute = now.getUTCMinutes().toString().padStart(2, "0");
