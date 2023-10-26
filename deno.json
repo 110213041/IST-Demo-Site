@@ -1,7 +1,9 @@
 {
     "compilerOptions": {
         "strict": true,
-        "noFallthroughCasesInSwitch": true
+        "noFallthroughCasesInSwitch": true,
+        "checkJs": true,
+        "lib": ["deno.window", "dom"]
     },
     "fmt": {
         "indentWidth": 4,

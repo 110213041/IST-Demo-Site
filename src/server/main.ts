@@ -3,6 +3,7 @@ import {
     defaultHandler,
     getCommentHandler,
     indexPageHandler,
+    postCommentHandler,
     resetDbHandler,
     staticPathHandler,
 } from "server/handler.ts";
@@ -25,6 +26,8 @@ function main(req: Request): Response | Promise<Response> {
         case "/get_comment":
             return getCommentHandler(req);
 
+        case "/post_comment":
+            return postCommentHandler(req);
         /** page route */
 
         case "/about":

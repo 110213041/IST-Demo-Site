@@ -81,3 +81,25 @@ export async function getComment() {
 
     return result;
 }
+
+export type commentType = {
+    name: string;
+    content: string;
+};
+
+export async function insertComment(comment: commentType): Promise<boolean> {
+    try {
+        await dbClient.execute(
+            "INSERT INTO message_board (`name`, `content`) VALUES (?, ?)",
+            [
+                comment.name,
+                comment.content,
+            ],
+        );
+    } catch (e) {
+        console.error(e);
+        return false;
+    }
+
+    return true;
+}
