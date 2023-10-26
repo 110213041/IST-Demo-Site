@@ -57,6 +57,8 @@ newCommentForm?.addEventListener("submit", async (e) => {
     const name = nameNode.value;
     const content = contentNode.value;
 
+    if (content === "") return;
+
     const result = await fetch("./post_comment", {
         method: "POST",
         body: JSON.stringify({ name: name, content }),
@@ -72,7 +74,50 @@ newCommentForm?.addEventListener("submit", async (e) => {
         nameNode.value = "";
         contentNode.value = "";
         updateToggleState();
+        displayUserComment();
     }
 });
 
 // TODO: add fetch database logic
+
+const displayCommentRoot = document.querySelector("#display-comment-root");
+/**
+ * @typedef {Object} commentType
+ * @property {string} name
+ * @property {string} content
+ */
+
+async function displayUserComment() {
+    if (!displayCommentRoot) return;
+    try {
+        const resp = await fetch("./get_comment");
+
+        /**@type commentType[] */
+        const commentArray = await resp.json();
+        // displayCommentRoot.innerHTML = JSON.stringify(commentArray);
+
+        /**@type string[] */
+        const stringBuffer = [];
+
+        commentArray.forEach((v) => {
+            stringBuffer.push(
+                `<div class="comment-wrapper">
+                    <div class="comment-name">${v.name}</div>
+                    <div class="comment-content">${v.content}</div>
+                </div>`,
+            );
+        });
+
+        displayCommentRoot.innerHTML = stringBuffer.join("");
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+/** global */
+
+document.addEventListener("readystatechange", () => {
+    if (document.readyState === "complete") {
+        displayUserComment();
+    }
+});

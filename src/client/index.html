@@ -31,8 +31,8 @@
             <input type="text" id="new-comment-name">
             <br>
             <label for="new-comment-content">内容:</label>
-            <textarea type="text" id="new-comment-content" rows="5" cols="40"
-                placeholder="(2000字内)">
+            <textarea type="text" id="new-comment-content" rows="5" cols="40" placeholder="(2000字内)"
+                required>
             </textarea>
             <br>
             <button type="submit">新增記錄</button>
@@ -42,6 +42,7 @@
     <section id="display-comment-section">
         <h2>訪客留言</h2>
         <!-- TODO: Display Comment From Database -->
+        <div id="display-comment-root"></div>
     </section>
 </body>
 
