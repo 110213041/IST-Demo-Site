@@ -1,4 +1,4 @@
-/** new comment form relate */
+// * New comment form relate.
 
 const toggleStateEnum = Object.freeze({
     hidden: "hidden",
@@ -34,7 +34,7 @@ function updateToggleState() {
     console.log(newCommentForm.dataset["toggleState"]);
 }
 
-// TODO: submit record to database
+// * Submit record to database.
 
 newCommentForm?.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -78,7 +78,7 @@ newCommentForm?.addEventListener("submit", async (e) => {
     }
 });
 
-// TODO: add fetch database logic
+// * Add fetch database logic.
 
 const displayCommentRoot = document.querySelector("#display-comment-root");
 /**
@@ -94,7 +94,6 @@ async function displayUserComment() {
 
         /**@type commentType[] */
         const commentArray = await resp.json();
-        // displayCommentRoot.innerHTML = JSON.stringify(commentArray);
 
         /**@type string[] */
         const stringBuffer = [];
@@ -114,7 +113,7 @@ async function displayUserComment() {
     }
 }
 
-/** global */
+// * Global
 
 document.addEventListener("readystatechange", () => {
     if (document.readyState === "complete") {
