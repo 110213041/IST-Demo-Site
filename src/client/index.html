@@ -25,13 +25,17 @@
 
     <section id="new-comment-section">
         <h2>留言區</h2>
-        <form action="" method="post">
+        <button type="button" id="new-comment-toggle">新增留言</button>
+        <form action="" method="post" id="new-comment-form" data-toggle-state="expand">
             <label for="new-comment-name">姓名:</label>
             <input type="text" id="new-comment-name">
             <br>
             <label for="new-comment-content">内容:</label>
             <textarea type="text" id="new-comment-content" rows="5" cols="40"
-                placeholder="(2000字内)"></textarea>
+                placeholder="(2000字内)">
+            </textarea>
+            <br>
+            <button type="submit">新增記錄</button>
         </form>
     </section>
 
