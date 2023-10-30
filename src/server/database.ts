@@ -17,8 +17,13 @@ const dbClient = await new Client().connect(
 export async function resetDatabase(): Promise<boolean> {
     console.log("reset database call.");
 
+    const checkTableQuery =
+        `SELECT TABLE_SCHEMA, TABLE_NAME FROM information_schema.tables WHERE TABLE_SCHEMA = ${
+            env["DATABASE_DB"]
+        }`;
+
     let result: Record<"TABLE_SCHEMA" | "TABLE_NAME", string>[] = await dbClient.query(
-        `SELECT TABLE_SCHEMA, TABLE_NAME FROM information_schema.tables WHERE TABLE_SCHEMA != "information_schema";`,
+        checkTableQuery,
     );
 
     result.forEach(async (v) => {
@@ -30,9 +35,7 @@ export async function resetDatabase(): Promise<boolean> {
         }
     });
 
-    result = await dbClient.query(
-        `SELECT TABLE_SCHEMA, TABLE_NAME FROM information_schema.tables WHERE TABLE_SCHEMA != "information_schema";`,
-    );
+    result = await dbClient.query(checkTableQuery);
 
     if (result.length != 0) {
         console.error("fail to drop all table!");
