@@ -7,6 +7,8 @@
 
     <link rel="stylesheet" href="./static/css/common.css">
     <link rel="stylesheet" href="./static/css/index.css">
+    <link rel="stylesheet" href="style.css" />
+
 
     <!-- 
     Intended to block DOM rendering for security reason.
@@ -19,32 +21,38 @@
 </head>
 
 <body>
-    <h1>誠邀各位 暢所欲言 anything you want to say</h1>
+    <div class="background-image">
+        <h1 id="css-h1">誠邀各位 暢所欲言 Anything you want to say</h1>
 
-    <a href="./about">關於我們</a>
-    <img src="./static/img/" alt="" srcset="">
+        <a id="css-h1" href="./about">About us</a>
+        <img src="./static/img/" alt="" srcset="">
 
 
-    <section id="new-comment-section">
-        <h2>留言區</h2>
-        <button type="button" id="new-comment-toggle">新增留言</button>
-        <form action="" method="post" id="new-comment-form" data-toggle-state="expand">
-            <label for="new-comment-name">姓名:</label>
-            <input type="text" id="new-comment-name">
-            <br>
-            <label for="new-comment-content">内容:</label>
-            <textarea type="text" id="new-comment-content" rows="5" cols="40" placeholder="(2000字内)"
-                required>
+
+
+        <section id="new-comment-section">
+            <h2 id="css-h1">留言區</h2>
+            <button type="button" id="new-comment-toggle">新增留言</button>
+            <form action="" method="post" id="new-comment-form" data-toggle-state="expand">
+                <label id="css-h1" for="new-comment-name">姓名:</label>
+                <input type="text" id="new-comment-name">
+                <br>
+                <br>
+                <br>
+                <label id="css-h1" for="new-comment-content">内容:</label>
+                <textarea type="text" id="new-comment-content" rows="5" cols="40"
+                    placeholder="(2000字内)" required>
             </textarea>
-            <br>
-            <button type="submit">新增記錄</button>
-        </form>
-    </section>
+                <br>
+                <button type="submit">新增記錄</button>
+            </form>
+        </section>
 
-    <section id="display-comment-section">
-        <h2>訪客留言</h2>
-        <div id="display-comment-root"></div>
-    </section>
+        <section id="display-comment-section">
+            <h2 id="css-h1">訪客留言</h2>
+            <div id="display-comment-root,css-h1"></div>
+        </section>
+    </div>
 </body>
 
 </html>

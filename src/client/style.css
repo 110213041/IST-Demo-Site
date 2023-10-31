@@ -1,0 +1,19 @@
+#css-h1 {
+    color: white;
+}
+
+
+.background-image {
+    background-image: url('file:///C:/network%20security/midterm_demo/src/client/static/img/104637257.cms');
+    
+    background-size: cover;
+    
+    background-repeat: no-repeat;
+    
+    background-position: center center;
+    
+
+    
+    width: 1500px;
+    height: 800px;
+}
