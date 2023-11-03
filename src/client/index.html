@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link rel="stylesheet" href="./static/css/bootstrap.min.css">
     <link rel="stylesheet" href="./static/css/common.css">
     <link rel="stylesheet" href="./static/css/index.css">
 
@@ -21,25 +22,24 @@
 <body>
     <h1>誠邀各位 暢所欲言</h1>
 
-    <a href="./about">關於我們</a>
+    <a href="./about" class="btn btn-primary">關於我們</a>
 
-    <section id="new-comment-section">
+    <section id="new-comment-section" class="container-fluid">
         <h2>留言區</h2>
-        <button type="button" id="new-comment-toggle">新增留言</button>
-        <form action="" method="post" id="new-comment-form" data-toggle-state="expand">
+        <button type="button" id="new-comment-toggle" class="btn btn-primary">新增留言</button>
+        <form action="" method="post" id="new-comment-form" data-toggle-state="expand" class="">
             <label for="new-comment-name">姓名:</label>
             <input type="text" id="new-comment-name">
             <br>
             <label for="new-comment-content">内容:</label>
             <textarea type="text" id="new-comment-content" rows="5" cols="40" placeholder="(2000字内)"
-                required>
-            </textarea>
+                required></textarea>
             <br>
-            <button type="submit">新增記錄</button>
+            <button type="submit" class="btn btn-outline-success">新增記錄</button>
         </form>
     </section>
 
-    <section id="display-comment-section">
+    <section id="display-comment-section" class="container-fluid">
         <h2>訪客留言</h2>
         <div id="display-comment-root"></div>
     </section>
