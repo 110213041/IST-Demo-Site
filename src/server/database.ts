@@ -15,8 +15,25 @@ type envKey =
 
 const env: Record<envKey, string | undefined> = await load();
 
+const caFilePath = (() => {
+    const filePath = Deno.makeTempFileSync({
+        "suffix": ".pem",
+    });
+
+    const encodeCaByte = env["DATABASE_CA"];
+    if (encodeCaByte === undefined) {
+        console.error("DATABASE_CA env not found");
+    } else {
+        const caContentByte = new TextEncoder().encode(
+            new TextDecoder().decode(decodeBase64(encodeCaByte)),
+        );
+        Deno.writeFileSync(filePath, caContentByte);
+    }
+    return filePath;
+})();
+
 const dbClient = await new Client().connect(
-    env["DATABASE_DEPLOY_STATE"] === "DEPLOY"
+    env["DATABASE_DEPLOY_STATE"] !== "DEPLOY"
         ? {
             hostname: env["DATABASE_HOST"],
             username: env["DATABASE_USERNAME"],
@@ -25,28 +42,12 @@ const dbClient = await new Client().connect(
         }
         : {
             hostname: env["DATABASE_HOST"],
-            port: parseInt(env["DATABASE_PORT"] ?? "3306"),
+            port: parseInt(env["DATABASE_PORT"] !== undefined ? env["DATABASE_PORT"] : "3306"),
             username: env["DATABASE_USERNAME"],
             db: env["DATABASE_DB"],
             password: env["DATABASE_PASSWORD"],
             tls: {
-                caCerts: (() => {
-                    const tempCaFilePath = Deno.makeTempFileSync({
-                        "suffix": "pem",
-                    });
-
-                    const encodeCaByte = env["DATABASE_CA"];
-                    if (encodeCaByte === undefined) {
-                        console.error("DATABASE_CA env not found");
-                    } else {
-                        const caContentByte = new TextEncoder().encode(
-                            new TextDecoder().decode(decodeBase64(encodeCaByte)),
-                        );
-                        Deno.writeFileSync(tempCaFilePath, caContentByte);
-                    }
-
-                    return [tempCaFilePath];
-                })(),
+                caCerts: [caFilePath],
             },
         },
 );
@@ -55,9 +56,9 @@ export async function resetDatabase(): Promise<boolean> {
     console.log("reset database call.");
 
     const checkTableQuery =
-        `SELECT TABLE_SCHEMA, TABLE_NAME FROM information_schema.tables WHERE TABLE_SCHEMA = ${
+        `SELECT TABLE_SCHEMA, TABLE_NAME FROM information_schema.tables WHERE TABLE_SCHEMA = '${
             env["DATABASE_DB"]
-        }`;
+        }'`;
 
     let result: Record<"TABLE_SCHEMA" | "TABLE_NAME", string>[] = await dbClient.query(
         checkTableQuery,
