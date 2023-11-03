@@ -1,17 +1,54 @@
 import { load } from "https://deno.land/std@0.204.0/dotenv/mod.ts";
 import { Client } from "https://deno.land/x/mysql@v2.12.1/mod.ts";
 
-type envKey = "DATABASE_HOST" | "DATABASE_DB" | "DATABASE_USERNAME" | "DATABASE_PASSWORD";
+import { decodeBase64 } from "https://deno.land/std@0.205.0/encoding/base64.ts";
 
-const env: Record<envKey, string> = await load();
+type envKey =
+    | "DATABASE_HOST"
+    | "DATABASE_DB"
+    | "DATABASE_PORT"
+    | "DATABASE_USERNAME"
+    | "DATABASE_PASSWORD"
+    // Deploy relate
+    | "DATABASE_DEPLOY_STATE"
+    | "DATABASE_CA";
+
+const env: Record<envKey, string | undefined> = await load();
 
 const dbClient = await new Client().connect(
-    {
-        hostname: env["DATABASE_HOST"],
-        username: env["DATABASE_USERNAME"],
-        db: env["DATABASE_DB"],
-        password: env["DATABASE_PASSWORD"],
-    },
+    env["DATABASE_DEPLOY_STATE"] === "DEPLOY"
+        ? {
+            hostname: env["DATABASE_HOST"],
+            username: env["DATABASE_USERNAME"],
+            db: env["DATABASE_DB"],
+            password: env["DATABASE_PASSWORD"],
+        }
+        : {
+            hostname: env["DATABASE_HOST"],
+            port: parseInt(env["DATABASE_PORT"] ?? "3306"),
+            username: env["DATABASE_USERNAME"],
+            db: env["DATABASE_DB"],
+            password: env["DATABASE_PASSWORD"],
+            tls: {
+                caCerts: (() => {
+                    const tempCaFilePath = Deno.makeTempFileSync({
+                        "suffix": "pem",
+                    });
+
+                    const encodeCaByte = env["DATABASE_CA"];
+                    if (encodeCaByte === undefined) {
+                        console.error("DATABASE_CA env not found");
+                    } else {
+                        const caContentByte = new TextEncoder().encode(
+                            new TextDecoder().decode(decodeBase64(encodeCaByte)),
+                        );
+                        Deno.writeFileSync(tempCaFilePath, caContentByte);
+                    }
+
+                    return [tempCaFilePath];
+                })(),
+            },
+        },
 );
 
 export async function resetDatabase(): Promise<boolean> {
