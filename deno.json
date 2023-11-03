@@ -17,6 +17,6 @@
         "server/": "./src/server/"
     },
     "tasks": {
-        "dev": "deno run --allow-net --allow-read --watch ./src/server/main.ts"
+        "dev": "deno run --allow-net --allow-read --allow-write --watch ./src/server/main.ts"
     }
 }

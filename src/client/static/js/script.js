@@ -100,9 +100,11 @@ async function displayUserComment() {
 
         commentArray.forEach((v) => {
             stringBuffer.push(
-                `<div class="comment-wrapper">
-                    <div class="comment-name">${v.name}</div>
-                    <div class="comment-content">${v.content}</div>
+                `<div class="comment-wrapper card">
+                    <div class="card-body">
+                        <div class="comment-name card-title">${v.name}</div>
+                        <div class="comment-content card-text">${v.content}</div>
+                    </div>
                 </div>`,
             );
         });
