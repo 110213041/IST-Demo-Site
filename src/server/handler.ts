@@ -1,6 +1,13 @@
 import { serveDir, serveFile } from "https://deno.land/std@0.204.0/http/file_server.ts";
+import { DOMParser } from "https://deno.land/x/deno_dom@v0.1.38/deno-dom-wasm.ts";
 
-import { commentType, getComment, insertComment, resetDatabase } from "server/database.ts";
+import {
+    commentType,
+    getComment,
+    insertComment,
+    resetDatabase,
+    searchComment,
+} from "server/database.ts";
 import { requestLog } from "server/util.ts";
 
 export async function resetDbHandler(req: Request): Promise<Response> {
@@ -95,6 +102,47 @@ export async function indexPageHandler(req: Request): Promise<Response> {
 
 export async function aboutPageHandler(req: Request): Promise<Response> {
     return await responseTemplate(req, "./src/client/about.html");
+}
+
+export async function searchPageHandler(req: Request): Promise<Response> {
+    const reqUrl = new URL(req.url);
+    const queryContent = reqUrl.searchParams.get("q");
+
+    if (queryContent === null) {
+        requestLog(req, 200);
+        return await responseTemplate(req, "./src/client/search.html");
+    }
+
+    const dbResult = await searchComment(queryContent);
+
+    const searchPage = await Deno.readFile("./src/client/search.html");
+    const pageString = new TextDecoder().decode(searchPage);
+
+    const pageDOM = new DOMParser().parseFromString(pageString, "text/html")!;
+
+    const resultDOM = pageDOM.querySelector(
+        `meta[name="search-result"]`,
+    )! as unknown as HTMLMetaElement;
+
+    resultDOM.setAttribute("content", JSON.stringify(dbResult));
+
+    const commentH2 = pageDOM.querySelector(
+        "#display-comment-section>h2",
+    )! as unknown as HTMLHeadingElement;
+
+    commentH2.innerHTML = `Result of: "${queryContent}"`;
+
+    requestLog(req, 200);
+
+    return await new Response(
+        `<!DOCTYPE html>${pageDOM.documentElement!.innerHTML}`,
+        {
+            status: 200,
+            headers: {
+                "content-type": "text/html",
+            },
+        },
+    );
 }
 
 export function defaultHandler(req: Request) {

@@ -5,6 +5,7 @@ import {
     indexPageHandler,
     postCommentHandler,
     resetDbHandler,
+    searchPageHandler,
     staticPathHandler,
 } from "server/handler.ts";
 
@@ -32,6 +33,9 @@ function main(req: Request): Response | Promise<Response> {
 
         case "/about":
             return aboutPageHandler(req);
+
+        case "/search":
+            return searchPageHandler(req);
 
         case "/":
             return indexPageHandler(req);

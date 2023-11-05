@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freedom Board - Search</title>
+
+    <link rel="stylesheet" href="./static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./static/css/common.css">
+    <link rel="stylesheet" href="./static/css/index.css">
+
+    <!-- 
+    Intended to block DOM rendering for security reason.
+    Do not add "async" or "defer" in following script tag. 
+    -->
+    <script src="./static/js/protect_warning.js"></script>
+
+    <meta name="search-result" content="[]">
+
+    <script type="module" src="./static/js/script_search.js" defer></script>
+
+</head>
+
+<body>
+    <h1>Search</h1>
+
+    <div class="page-nav">
+        <a href="./" class="btn btn-primary">Home</a>
+        <a href="./about" class="btn btn-secondary">About</a>
+    </div>
+
+    <section id="search-wrapper" class="container-fluid">
+        <input id="search-input" type="text">
+        <button id="search-btn" type="button" class="btn btn-primary">Search</button>
+    </section>
+
+    <section id="display-comment-section" class="container-fluid">
+        <h2>Comment</h2>
+        <div id="display-comment-root"></div>
+    </section>
+</body>
+
+</html>
