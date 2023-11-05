@@ -110,15 +110,28 @@ export async function resetDatabasePerFourHour(): Promise<void> {
 
     setTimeout(resetDatabasePerFourHour, (60 * 3 * 1000) - (seconds * 10000) - milliSeconds);
 }
+type messageBoardResult = {
+    id: number;
+    name: string;
+    content: string;
+};
 
 export async function getComment() {
-    type messageBoardResult = {
-        id: number;
-        name: string;
-        content: string;
-    };
+    const result: messageBoardResult[] = await dbClient.query(
+        "SELECT `id`, `name`, `content` FROM message_board;",
+    );
 
-    const result: messageBoardResult[] = await dbClient.query("SELECT * FROM message_board;");
+    return result;
+}
+
+export async function searchComment(target: string) {
+    const result: messageBoardResult[] = await dbClient.query(
+        "SELECT `id`, `name`, `content` FROM message_board WHERE `name` LIKE ? OR `content` LIKE ?",
+        [
+            `%${target}%`,
+            `%${target}%`,
+        ],
+    );
 
     return result;
 }
