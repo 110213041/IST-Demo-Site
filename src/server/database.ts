@@ -1,5 +1,6 @@
 import { load } from "https://deno.land/std@0.204.0/dotenv/mod.ts";
 import { Client } from "https://deno.land/x/mysql@v2.12.1/mod.ts";
+import { prepareVirtualFile } from "https://deno.land/x/mock_file@v1.1.2/mod.ts";
 
 import { decodeBase64 } from "https://deno.land/std@0.205.0/encoding/base64.ts";
 
@@ -16,9 +17,8 @@ type envKey =
 const env: Record<envKey, string | undefined> = await load();
 
 const caFilePath = (() => {
-    const filePath = Deno.makeTempFileSync({
-        "suffix": ".pem",
-    });
+    const filePath = "./ca.pem";
+    prepareVirtualFile(filePath);
 
     const encodeCaByte = env["DATABASE_CA"];
     if (encodeCaByte === undefined) {
