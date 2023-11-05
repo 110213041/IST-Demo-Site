@@ -28,6 +28,7 @@ if (env === undefined) {
         "DATABASE_CA": Deno.env.get("DATABASE_CA"),
     };
 }
+console.log("env", env);
 
 const caFilePath = (() => {
     const filePath = "./ca.pem";
