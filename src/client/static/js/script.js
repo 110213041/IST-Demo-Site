@@ -6,9 +6,9 @@ const toggleStateEnum = Object.freeze({
 });
 
 const submitBtnMessage = Object.freeze({
-    idle: "新增記錄",
-    running: "送信中",
-    retry: "請重試",
+    idle: "new record",
+    running: "publishing",
+    retry: "please retry",
 });
 
 /** @type HTMLButtonElement | null */

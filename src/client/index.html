@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-tw">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -16,31 +16,31 @@
     <script src="./static/js/protect_warning.js"></script>
 
     <script type="module" src="./static/js/script.js" defer></script>
-    <title>暢所欲言</title>
+    <title>Freedom Board</title>
 </head>
 
 <body>
-    <h1>誠邀各位 暢所欲言</h1>
+    <h1>Freedom Board</h1>
 
-    <a href="./about" class="btn btn-primary">關於我們</a>
+    <a href="./about" class="btn btn-primary">About</a>
 
     <section id="new-comment-section" class="container-fluid">
-        <h2>留言區</h2>
-        <button type="button" id="new-comment-toggle" class="btn btn-primary">新增留言</button>
+        <h2>Wanna write something?</h2>
+        <button type="button" id="new-comment-toggle" class="btn btn-primary">new comment</button>
         <form action="" method="post" id="new-comment-form" data-toggle-state="expand" class="">
-            <label for="new-comment-name">姓名:</label>
+            <label for="new-comment-name">name:</label>
             <input type="text" id="new-comment-name">
             <br>
-            <label for="new-comment-content">内容:</label>
-            <textarea type="text" id="new-comment-content" rows="5" cols="40" placeholder="(2000字内)"
-                required></textarea>
+            <label for="new-comment-content">comment:</label>
+            <textarea type="text" id="new-comment-content" rows="5" cols="40"
+                placeholder="(2000 words)" required></textarea>
             <br>
-            <button type="submit" class="btn btn-outline-success">新增記錄</button>
+            <button type="submit" class="btn btn-outline-success">publish</button>
         </form>
     </section>
 
     <section id="display-comment-section" class="container-fluid">
-        <h2>訪客留言</h2>
+        <h2>Comment</h2>
         <div id="display-comment-root"></div>
     </section>
 </body>
