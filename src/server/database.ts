@@ -16,7 +16,9 @@ type envKey =
 
 let env: Record<envKey, string | undefined> = await load();
 
-if (env === undefined) {
+console.log(env);
+
+if (env == undefined) {
     console.log("env is undefined");
     env = {
         "DATABASE_HOST": Deno.env.get("DATABASE_HOST"),
