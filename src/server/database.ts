@@ -14,12 +14,9 @@ type envKey =
     | "DATABASE_DEPLOY_STATE";
 // | "DATABASE_CA";
 
-let env: Record<envKey, string | undefined> = await load();
+let env: Record<envKey, string | undefined>;
 
-console.log(env);
-
-if (env == undefined) {
-    console.log("env is undefined");
+if (Deno.env.get("DATABASE_DEPLOY_STATE") === "DEPLOY") {
     env = {
         "DATABASE_HOST": Deno.env.get("DATABASE_HOST"),
         "DATABASE_DB": Deno.env.get("DATABASE_DB"),
@@ -29,12 +26,8 @@ if (env == undefined) {
         // Deploy relate
         "DATABASE_DEPLOY_STATE": Deno.env.get("DATABASE_DEPLOY_STATE"),
     };
-
-    console.log("DATABASE_HOST:", env["DATABASE_HOST"]);
-    console.log("DATABASE_DB:", env["DATABASE_DB"]);
-    console.log("DATABASE_PORT:", env["DATABASE_PORT"]);
-    console.log("DATABASE_PASSWORD:", env["DATABASE_PASSWORD"]);
-    console.log("DATABASE_DEPLOY_STATE:", env["DATABASE_DEPLOY_STATE"]);
+} else {
+    env = await load();
 }
 
 const caFilePath = (() => {
