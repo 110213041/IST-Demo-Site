@@ -7,10 +7,6 @@ body {
 }
 
 
-/* #new-comment-form {
-    transition: max-height 0.15 ease;
-} */
-
 #new-comment-section {
     display: flex;
     flex-direction: column;
@@ -34,6 +30,11 @@ body {
     gap: 1rem;
 }
 
+.page-nav {
+    display: flex;
+    gap: 2rem;
+}
+
 .comment-wrapper {
     max-width: 50rem;
     margin-bottom: 1rem;
@@ -50,4 +51,11 @@ body {
     visibility: visible;
     max-height: 500px;
     transition: max-height 0.15s ease-in;
+}
+
+#search-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
 }
