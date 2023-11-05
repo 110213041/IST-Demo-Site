@@ -1,7 +1,8 @@
 import { load } from "https://deno.land/std@0.204.0/dotenv/mod.ts";
 import { Client } from "https://deno.land/x/mysql@v2.12.1/mod.ts";
+// import { prepareVirtualFile } from "https://deno.land/x/mock_file@v1.1.2/mod.ts";
 
-import { decodeBase64 } from "https://deno.land/std@0.205.0/encoding/base64.ts";
+// import { decodeBase64 } from "https://deno.land/std@0.205.0/encoding/base64.ts";
 
 type envKey =
     | "DATABASE_HOST"
@@ -10,25 +11,38 @@ type envKey =
     | "DATABASE_USERNAME"
     | "DATABASE_PASSWORD"
     // Deploy relate
-    | "DATABASE_DEPLOY_STATE"
-    | "DATABASE_CA";
+    | "DATABASE_DEPLOY_STATE";
+// | "DATABASE_CA";
 
-const env: Record<envKey, string | undefined> = await load();
+let env: Record<envKey, string | undefined>;
+
+if (Deno.env.get("DATABASE_DEPLOY_STATE") === "DEPLOY") {
+    env = {
+        "DATABASE_HOST": Deno.env.get("DATABASE_HOST"),
+        "DATABASE_DB": Deno.env.get("DATABASE_DB"),
+        "DATABASE_PORT": Deno.env.get("DATABASE_PORT"),
+        "DATABASE_USERNAME": Deno.env.get("DATABASE_USERNAME"),
+        "DATABASE_PASSWORD": Deno.env.get("DATABASE_PASSWORD"),
+        // Deploy relate
+        "DATABASE_DEPLOY_STATE": Deno.env.get("DATABASE_DEPLOY_STATE"),
+    };
+} else {
+    env = await load();
+}
 
 const caFilePath = (() => {
-    const filePath = Deno.makeTempFileSync({
-        "suffix": ".pem",
-    });
+    const filePath = "./ca.pem";
+    // prepareVirtualFile(filePath);
 
-    const encodeCaByte = env["DATABASE_CA"];
-    if (encodeCaByte === undefined) {
-        console.error("DATABASE_CA env not found");
-    } else {
-        const caContentByte = new TextEncoder().encode(
-            new TextDecoder().decode(decodeBase64(encodeCaByte)),
-        );
-        Deno.writeFileSync(filePath, caContentByte);
-    }
+    // const encodeCaByte = env["DATABASE_CA"];
+    // if (encodeCaByte === undefined) {
+    //     console.error("DATABASE_CA env not found");
+    // } else {
+    //     const caContentByte = new TextEncoder().encode(
+    //         new TextDecoder().decode(decodeBase64(encodeCaByte)),
+    //     );
+    //     Deno.writeFileSync(filePath, caContentByte);
+    // }
     return filePath;
 })();
 
