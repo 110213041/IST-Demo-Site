@@ -14,7 +14,20 @@ type envKey =
     | "DATABASE_DEPLOY_STATE"
     | "DATABASE_CA";
 
-const env: Record<envKey, string | undefined> = await load();
+let env: Record<envKey, string | undefined> = await load();
+
+if (env === undefined) {
+    env = {
+        "DATABASE_HOST": Deno.env.get("DATABASE_HOST"),
+        "DATABASE_DB": Deno.env.get("DATABASE_DB"),
+        "DATABASE_PORT": Deno.env.get("DATABASE_PORT"),
+        "DATABASE_USERNAME": Deno.env.get("DATABASE_USERNAME"),
+        "DATABASE_PASSWORD": Deno.env.get("DATABASE_PASSWORD"),
+        // Deploy relate
+        "DATABASE_DEPLOY_STATE": Deno.env.get("DATABASE_DEPLOY_STATE"),
+        "DATABASE_CA": Deno.env.get("DATABASE_CA"),
+    };
+}
 
 const caFilePath = (() => {
     const filePath = "./ca.pem";
