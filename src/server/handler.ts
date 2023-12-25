@@ -127,11 +127,11 @@ export async function searchPageHandler(req: Request): Promise<Response> {
 
     resultDOM.setAttribute("content", JSON.stringify(dbResult));
 
-    const commentH2 = pageDOM.querySelector(
-        "#display-comment-section>h2",
-    )! as unknown as HTMLHeadingElement;
+    // const commentH2 = pageDOM.querySelector(
+    //     "#display-comment-section>h2",
+    // )! as unknown as HTMLHeadingElement;
 
-    commentH2.innerHTML = `Result of: "${queryContent}"`;
+    // commentH2.innerHTML = `Result of: "${queryContent}"`;
 
     requestLog(req, 200);
 
