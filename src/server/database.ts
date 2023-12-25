@@ -1,3 +1,4 @@
+/*
 import { load } from "https://deno.land/std@0.204.0/dotenv/mod.ts";
 import { Client } from "https://deno.land/x/mysql@v2.12.1/mod.ts";
 // import { prepareVirtualFile } from "https://deno.land/x/mock_file@v1.1.2/mod.ts";
@@ -65,7 +66,39 @@ const dbClient = await new Client().connect(
             },
         },
 );
+*/
 
+import { DB } from "https://deno.land/x/sqlite@v3.8/mod.ts";
+
+let dbClient: DB;
+
+const schema = `
+        CREATE TABLE message_board (
+            "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+            "name" TEXT,
+            "content" TEXT
+        )
+` as const;
+
+function initDataBase(loadDummyData = false) {
+    dbClient = new DB();
+    dbClient.execute(schema.trim());
+
+    if (loadDummyData) {
+        const dummyData = `
+        INSERT INTO
+            message_board ("name", "content")
+        VALUES
+            ('John Doe', 'Foo'),
+            ('Chris Wong', 'This website must be very secure!')
+            ;` as const;
+        dbClient.execute(dummyData);
+    }
+}
+
+initDataBase(true);
+
+/*
 export async function resetDatabase(): Promise<boolean> {
     console.log("reset database call.");
 
@@ -111,10 +144,16 @@ export async function resetDatabase(): Promise<boolean> {
     console.log("reset database success");
     return true;
 }
+*/
 
-export async function resetDatabasePerFourHour(): Promise<void> {
+export function resetDatabase(): boolean {
+    initDataBase(true);
+    return true;
+}
+
+export function resetDatabasePerFourHour() {
     console.log("resetDatabasePerFourHour call!");
-    await resetDatabase();
+    resetDatabase();
 
     const currentTime = new Date();
     console.log(`current time: ${currentTime}`);
@@ -130,24 +169,46 @@ type messageBoardResult = {
     content: string;
 };
 
-export async function getComment() {
-    const result: messageBoardResult[] = await dbClient.query(
+export function getComment() {
+    const result = dbClient.query(
         "SELECT `id`, `name`, `content` FROM message_board;",
-    );
+    ) as unknown as Array<[number, string, string]>;
 
-    return result;
+    return result.map((v) => {
+        return {
+            id: v[0],
+            name: v[1],
+            content: v[2],
+        };
+    });
 }
 
-export async function searchComment(target: string) {
-    const result: messageBoardResult[] = await dbClient.query(
+export function searchComment(target: string) {
+    const query = dbClient.prepareQuery<never, never, [string, string]>(
+        "SELECT `id`, `name`, `content` FROM message_board WHERE `name` LIKE ? OR `content` LIKE ?",
+    );
+
+    const result = query.all([`%${target}%`, `%${target}%`]) as unknown as Array<
+        [number, string, string]
+    >;
+
+    /*
+    const result = dbClient.query(
         "SELECT `id`, `name`, `content` FROM message_board WHERE `name` LIKE ? OR `content` LIKE ?",
         [
             `%${target}%`,
             `%${target}%`,
         ],
-    );
+    ) as unknown as Array<[number, string, string]>;
+    */
 
-    return result;
+    return result.map((v) => {
+        return {
+            id: v[0],
+            name: v[1],
+            content: v[2],
+        };
+    });
 }
 
 export type commentType = {
@@ -155,15 +216,21 @@ export type commentType = {
     content: string;
 };
 
-export async function insertComment(comment: commentType): Promise<boolean> {
+export function insertComment(comment: commentType): boolean {
     try {
-        await dbClient.execute(
+        // await dbClient.execute(
+        //     "INSERT INTO message_board (`name`, `content`) VALUES (?, ?)",
+        //     [
+        //         comment.name,
+        //         comment.content,
+        //     ],
+        // );
+
+        const query = dbClient.prepareQuery<never, never, [string, string]>(
             "INSERT INTO message_board (`name`, `content`) VALUES (?, ?)",
-            [
-                comment.name,
-                comment.content,
-            ],
         );
+
+        query.execute([comment.name, comment.content]);
     } catch (e) {
         console.error(e);
         return false;

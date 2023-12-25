@@ -10,8 +10,9 @@ import {
 } from "server/database.ts";
 import { requestLog } from "server/util.ts";
 
-export async function resetDbHandler(req: Request): Promise<Response> {
-    const status = await resetDatabase() ? 200 : 500;
+export function resetDbHandler(req: Request): Response {
+    // const status = await resetDatabase() ? 200 : 500;
+    const status = resetDatabase() ? 200 : 500;
 
     requestLog(req, status);
 
@@ -113,7 +114,7 @@ export async function searchPageHandler(req: Request): Promise<Response> {
         return await responseTemplate(req, "./src/client/search.html");
     }
 
-    const dbResult = await searchComment(queryContent);
+    const dbResult = searchComment(queryContent);
 
     const searchPage = await Deno.readFile("./src/client/search.html");
     const pageString = new TextDecoder().decode(searchPage);
@@ -134,7 +135,7 @@ export async function searchPageHandler(req: Request): Promise<Response> {
 
     requestLog(req, 200);
 
-    return await new Response(
+    return new Response(
         `<!DOCTYPE html>${pageDOM.documentElement!.innerHTML}`,
         {
             status: 200,
