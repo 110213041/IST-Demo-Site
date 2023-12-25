@@ -1,3 +1,5 @@
+import { createSecureSandbox } from "./util.js";
+
 // * New comment form relate.
 
 const toggleStateEnum = Object.freeze({
@@ -79,7 +81,9 @@ newCommentForm?.addEventListener("submit", async (e) => {
 });
 
 // * Add fetch database logic.
-
+/**
+ * @type HTMLElement | null
+ */
 const displayCommentRoot = document.querySelector("#display-comment-root");
 /**
  * @typedef {Object} commentType
@@ -109,7 +113,8 @@ async function displayUserComment() {
             );
         });
 
-        displayCommentRoot.innerHTML = stringBuffer.join("");
+        // displayCommentRoot.innerHTML = stringBuffer.join("");
+        createSecureSandbox(displayCommentRoot, stringBuffer.join(""));
     } catch (e) {
         console.error(e);
     }

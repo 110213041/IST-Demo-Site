@@ -1,20 +1,25 @@
+import { createSecureSandbox } from "./util.js";
+
 /**
  * @typedef {Object} commentType
  * @property {string} name
  * @property {string} content
  */
 
+
 function main() {
     /**
      * @type HTMLMetaElement | null
      */
     const searchResult = document.querySelector("meta[name='search-result']");
-
     if (searchResult === null) {
         console.error("meta[name='search-result'] not found");
         return;
     }
 
+    /**
+     * @type HTMLElement | null
+     */
     const displayCommentRoot = document.querySelector("#display-comment-root");
     if (displayCommentRoot === null) {
         console.error("#display-comment-root not found");
@@ -38,9 +43,21 @@ function main() {
         );
     });
 
-    displayCommentRoot.innerHTML = stringBuffer.join("");
+    // displayCommentRoot.innerHTML = stringBuffer.join("");
+    createSecureSandbox(displayCommentRoot, stringBuffer.join(""));
 
     const query = new URL(window.location.href).searchParams.get("q");
+
+    /** @type HTMLHeadingElement | null */
+    const displayCommentMessage = document.querySelector("#display-comment-message");
+    if (displayCommentMessage === null) {
+        console.error("#display-comment-message not found");
+        return;
+    }
+
+    if (query !== null) {
+        displayCommentMessage.innerText = `Result of: "${query}"`;
+    }
 
     /** @type HTMLInputElement | null */
     const searchInput = document.querySelector("#search-input");
