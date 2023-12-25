@@ -1,8 +1,11 @@
+import { createSecureSandbox } from "./util.js";
+
 /**
  * @typedef {Object} commentType
  * @property {string} name
  * @property {string} content
  */
+
 
 function main() {
     /**
@@ -14,6 +17,9 @@ function main() {
         return;
     }
 
+    /**
+     * @type HTMLElement | null
+     */
     const displayCommentRoot = document.querySelector("#display-comment-root");
     if (displayCommentRoot === null) {
         console.error("#display-comment-root not found");
@@ -37,10 +43,11 @@ function main() {
         );
     });
 
-    displayCommentRoot.innerHTML = stringBuffer.join("");
+    // displayCommentRoot.innerHTML = stringBuffer.join("");
+    createSecureSandbox(displayCommentRoot, stringBuffer.join(""));
 
     const query = new URL(window.location.href).searchParams.get("q");
-    
+
     /** @type HTMLHeadingElement | null */
     const displayCommentMessage = document.querySelector("#display-comment-message");
     if (displayCommentMessage === null) {

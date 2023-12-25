@@ -1,8 +1,12 @@
+html,
 body {
-    /* margin: 0 auto; */
+    height: 100%;
+    overflow-x: hidden;
+}
+
+body {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex-flow: column;
     align-items: center;
 }
 
@@ -24,8 +28,8 @@ body {
 
 #display-comment-section {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex-flow: column;
+    /* justify-content: center; */
     align-items: center;
     gap: 1rem;
 }
